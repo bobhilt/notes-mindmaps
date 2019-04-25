@@ -13,8 +13,7 @@
       - Bob Hiltner
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node CREATED="1506041805584" FOLDED="true" ID="ID_723738392" MODIFIED="1547590600133" POSITION="right" TEXT="Datatypes">
 <node CREATED="1506041812727" ID="ID_565295307" MODIFIED="1506041815838" TEXT="Number">
 <node CREATED="1506041815839" ID="ID_1094785101" MODIFIED="1506041817551" TEXT="int"/>
@@ -275,6 +274,11 @@
 <node CREATED="1526723700961" ID="ID_1871635216" MODIFIED="1526723708337" TEXT="http://jinja.pocoo.org/"/>
 </node>
 </node>
+</node>
+</node>
+<node CREATED="1554450905767" ID="ID_236641977" MODIFIED="1554450912055" POSITION="left" TEXT="People">
+<node CREATED="1554450913247" ID="ID_935200927" MODIFIED="1554450920612" TEXT="Core Developer">
+<node CREATED="1554450922070" ID="ID_194351032" MODIFIED="1554450928981" TEXT="Raymond Hettinger @raymondh"/>
 </node>
 </node>
 </node>
