@@ -1,0 +1,389 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>setup</title>
+<style type="text/css">
+    li { list-style: none;  margin: 0; }
+    p { margin: 0; }
+    span.foldopened { color: white; font-size: xx-small;
+    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;
+    VISIBILITY: visible;
+    cursor:pointer; }
+
+
+    span.foldclosed { color: #666666; font-size: xx-small;
+    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;
+    VISIBILITY: hidden;
+    cursor:pointer; }
+
+    span.foldspecial { color: #666666; font-size: xx-small; border-style: none solid solid none;
+    border-color: #CCCCCC; border-width: 1; font-family: sans-serif; padding: 0em 0.1em 0em 0.1em; background: #e0e0e0;
+    cursor:pointer; }
+
+    span.l { color: red; font-weight: bold; }
+
+    a.mapnode:link {text-decoration: none; color: black; }
+    a.mapnode:visited {text-decoration: none; color: black; }
+    a.mapnode:active {text-decoration: none; color: black; }
+    a.mapnode:hover {text-decoration: none; color: black; background: #eeeee0; }
+
+</style>
+<!-- ^ Position is not set to relative / absolute here because of Mozilla -->
+</head>
+<body>
+
+<script type="text/javascript">
+   // Here we implement folding. It works fine with MSIE5.5, MSIE6.0 and
+   // Mozilla 0.9.6.
+
+   if (document.layers) {
+      //Netscape 4 specific code
+      pre = 'document.';
+      post = ''; }
+   if (document.getElementById) {
+      //Netscape 6 specific code
+      pre = 'document.getElementById("';
+      post = '").style'; }
+   if (document.all) {
+      //IE4+ specific code
+      pre = 'document.all.';
+      post = '.style'; }
+
+function layer_exists(layer) {
+   try {
+      eval(pre + layer + post);
+      return true; }
+   catch (error) {
+      return false; }}
+
+function show_layer(layer) {
+   eval(pre + layer + post).position = 'relative'; 
+   eval(pre + layer + post).visibility = 'visible'; }
+
+function hide_layer(layer) {
+   eval(pre + layer + post).visibility = 'hidden';
+   eval(pre + layer + post).position = 'absolute'; }
+
+function hide_folder(folder) {
+    hide_folding_layer(folder)
+    show_layer('show'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+}
+
+function show_folder(folder) {
+    // Precondition: all subfolders are folded
+
+    show_layer('hide'+folder);
+    hide_layer('show'+folder);
+    show_layer('fold'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+
+    var i;
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       show_layer('show'+folder+'_'+i); }
+}
+function show_folder_completely(folder) {
+    // Precondition: all subfolders are folded
+
+    show_layer('hide'+folder);
+    hide_layer('show'+folder);
+    show_layer('fold'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+
+    var i;
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       show_folder_completely(folder+'_'+i); }
+}
+
+
+
+function hide_folding_layer(folder) {
+   var i;
+   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       hide_folding_layer(folder+'_'+i); }
+
+   hide_layer('hide'+folder);
+   hide_layer('show'+folder);
+   hide_layer('fold'+folder);
+
+   scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+}
+
+function fold_document() {
+   var i;
+   var folder = '1';
+   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       hide_folder(folder+'_'+i); }
+}
+
+function unfold_document() {
+   var i;
+   var folder = '1';
+   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       show_folder_completely(folder+'_'+i); }
+}
+
+</script>
+<SPAN class="foldspecial" onclick="fold_document()">All +</SPAN>
+<SPAN class="foldspecial" onclick="unfold_document()">All -</SPAN>
+<p>setup
+<ul><li>projects &amp; apps
+<ul><li><span id="show1_1" class="foldclosed" onClick="show_folder('1_1')" style="POSITION: absolute">+</span> <span id="hide1_1" class="foldopened" onClick="hide_folder('1_1')">-</span>
+project
+<ul id="fold1_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_1" class="foldclosed" onClick="show_folder('1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_1_1" class="foldopened" onClick="hide_folder('1_1_1')">-</span>
+create
+<ul id="fold1_1_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_1_1" class="foldclosed" onClick="show_folder('1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_1_1_1" class="foldopened" onClick="hide_folder('1_1_1_1')">-</span>
+$ django-admin startproject mysite
+<ul id="fold1_1_1_1" style="POSITION: relative; VISIBILITY: visible;"><li>generates
+<ul><li><p>mysite/
+<br>
+ &nbsp;&nbsp;&nbsp;manage.py
+<br>
+ &nbsp;&nbsp;&nbsp;mysite/
+<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init__.py
+<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;settings.py
+<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;urls.py
+<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wsgi.py
+<br>
+
+</li>
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>collection of configuration and apps for a particular website
+<ul><li>"project coupling kills re-use."
+
+</li>
+
+</ul>
+</li>
+<li>&nbsp;
+<ul><li>contains
+<ul><li>settings module
+
+</li>
+<li>root urlconf module
+
+</li>
+<li>that's it*
+<ul><li>*incorporates multiple apps
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>app
+<ul><li>some bit of functionality
+<ul><li>poll app
+
+</li>
+<li>blog
+
+</li>
+
+</ul>
+</li>
+<li>can be in multiple projects
+
+</li>
+<li>can live anywhere on your Python path
+
+</li>
+<li>principles
+<ul><li>1. Do one thing and do it well
+
+</li>
+<li>2. Don't be afraid of multiple apps.
+<ul><li>caveat: Upgrade can be hard with dueling dependencies
+
+</li>
+
+</ul>
+</li>
+<li>3. Write for flexibility
+
+</li>
+<li>4. Build to distribute
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>cd mysite
+
+</li>
+<li>adding an app
+<ul><li>from project directory, createapp
+<ul><li>$ python manage.py startapp &lt;polls (app name)&gt;
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2" class="foldclosed" onClick="show_folder('1_2')" style="POSITION: absolute">+</span> <span id="hide1_2" class="foldopened" onClick="hide_folder('1_2')">-</span>
+create view
+<ul id="fold1_2" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_1" class="foldclosed" onClick="show_folder('1_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1" class="foldopened" onClick="hide_folder('1_2_1')">-</span>
+polls/views.py
+<ul id="fold1_2_1" style="POSITION: relative; VISIBILITY: visible;"><li><p>from django.http import HttpPResponse
+<br>
+
+<br>
+def index(request)
+<br>
+ &nbsp;return HttpResponse("Hello, World, from polls index page!")
+</li>
+</ul>
+</li>
+
+</ul>
+</li>
+<li>map view url with URLconf
+<ul><li><span id="show1_3" class="foldclosed" onClick="show_folder('1_3')" style="POSITION: absolute">+</span> <span id="hide1_3" class="foldopened" onClick="hide_folder('1_3')">-</span>
+polls/urls.py
+<ul id="fold1_3" style="POSITION: relative; VISIBILITY: visible;"><li><p>from django.urls import path
+<br>
+
+<br>
+from . import views
+<br>
+
+<br>
+# urlpatterns = list of URLconf path calls &nbsp;
+<br>
+## path(route, views [, kwargs, name])
+<br>
+
+<br>
+urlpatterns = [
+<br>
+ &nbsp;path('', views.index, name='index'),
+<br>
+]
+<p>django request handler
+<ul><li>looks for first matching element in urlpatterns[]
+
+</li>
+
+</ul></li>
+</ul>
+</li>
+
+</ul>
+</li>
+<li>point the root URLconf at the polls.urls module
+<ul><li><span id="show1_4" class="foldclosed" onClick="show_folder('1_4')" style="POSITION: absolute">+</span> <span id="hide1_4" class="foldopened" onClick="hide_folder('1_4')">-</span>
+mysite/urls.py
+<ul id="fold1_4" style="POSITION: relative; VISIBILITY: visible;"><li><p>&nbsp;
+<p>add an import for django.urls.include
+<p>insert an include() in the urlpatterns list
+<p>from django.contrib import admin
+<br>
+from django.urls import include, path
+<br>
+
+<br>
+urlpatterns = [
+<br>
+ &nbsp;path('polls/', include(polls.url)),
+<br>
+ &nbsp;path('admin/', admin.site.urls),
+<br>
+]
+</li>
+</ul>
+</li>
+<li><span id="show1_5" class="foldclosed" onClick="show_folder('1_5')" style="POSITION: absolute">+</span> <span id="hide1_5" class="foldopened" onClick="hide_folder('1_5')">-</span>
+include()
+<ul id="fold1_5" style="POSITION: relative; VISIBILITY: visible;"><li>allows naming app as needed within a project
+
+</li>
+<li>always use include() when you include other URL patterns
+<ul><li>except for admin.site.urls
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>path()
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_6" class="foldclosed" onClick="show_folder('1_6')" style="POSITION: absolute">+</span> <span id="hide1_6" class="foldopened" onClick="hide_folder('1_6')">-</span>
+run dev server
+<ul id="fold1_6" style="POSITION: relative; VISIBILITY: visible;"><li>$ python manage.py runserver
+<ul><li>defaults to localhost:8000
+<ul><li>to change port:
+<ul><li>$ python manage.py runserver 8080
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>rocket ship default page
+
+</li>
+<li>ignor unapplied migrations warning
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_7" class="foldclosed" onClick="show_folder('1_7')" style="POSITION: absolute">+</span> <span id="hide1_7" class="foldopened" onClick="hide_folder('1_7')">-</span>
+working?
+<ul id="fold1_7" style="POSITION: relative; VISIBILITY: visible;"><li> http://localhost:8000/polls/
+<ul><li>shows hello world message
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul><SCRIPT type="text/javascript">
+fold_document();
+</SCRIPT>
+</body>
+</html>
